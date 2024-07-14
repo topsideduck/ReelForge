@@ -1,3 +1,6 @@
+from g4f.client import Client
+
+
 class Generator:
     def __init__(self, language: str, system_instructions: str) -> None:
         self.language: str = language
@@ -15,3 +18,5 @@ Json doesn't allow line breaks, so replace all line breaks in the script with "\
              """,
             }
         ]
+
+        self._client: Client = Client()
