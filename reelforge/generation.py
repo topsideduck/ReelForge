@@ -3,8 +3,22 @@ from g4f.client import Client
 
 class Generator:
     def __init__(self, language: str, system_instructions: str) -> None:
+        """
+        Generator class that initialises a GPT-4o instance with system
+        instructions to generate scripts.
+
+        Args:
+            language (str): the language of the script/video.
+            system_instructions (str): the default instructions to be passed
+                to the model to set its behaviour. include instructions here on
+                how the script should be generated.
+        """
+
+        # TODO: customizability of model (currently only GPT-4o)
         self.language: str = language
 
+        # Dictionary that stores the conversation between the user and model.
+        # Always starts with the system instructions as the first item.
         self._conversation: list[dict[str, str]] = [
             {
                 "role": "system",
