@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "reelforge"
+version = "0.1.0"
+description = "Fully automated generation of short-form videos"
+authors = ["Harikeshav R <r.harikeshav@gmail.com>"]
+license = "GNU General Public License v3.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
