@@ -53,7 +53,7 @@ Json doesn't allow line breaks, so replace all line breaks in the script with "\
         if language.lower().capitalize() not in supported_languages:
             raise ValueError(
                 f"{language} is not supported! Supported languages: "
-                f"{", ".join(supported_languages).strip(', ')}."
+                f"{", ".join(supported_languages).strip(chars=', ')}."
             )
 
         else:
@@ -70,7 +70,7 @@ Json doesn't allow line breaks, so replace all line breaks in the script with "\
         # Delete everything but the system prompt, as it is always required.
         del self._conversation[1:]
 
-    def generate_script(self, topic: str) -> dict | None:
+    def generate_script(self, topic: str) -> dict:
         """
         Generates a script based on the topic provided by the user.
 
@@ -78,11 +78,11 @@ Json doesn't allow line breaks, so replace all line breaks in the script with "\
             topic (str): The topic to generate the script on.
 
         Returns:
-            dict | None: a dictionary with the keys "title" and "script". The
+            dict : a dictionary with the keys "title" and "script". The
             "title" contains a title automatically generated from the script.
             The "script" contains the script generated based on the prompt.
         """
-        prompt: str = f"""
+        prompt: str = f"""\
         Topic: {topic}
         Language: {self.language}
         """
