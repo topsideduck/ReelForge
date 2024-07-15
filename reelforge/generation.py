@@ -107,20 +107,4 @@ Json doesn't allow line breaks, so replace all line breaks in the script with "\
 
         # Since the output given by GPT-4o is in json, we load it
         # into a dictionary and return it.
-        return json.loads(response.choices[0].message.content)
-
-
-if __name__ == '__main__':
-    system_instructions = """
-You are a script writer for a Youtube Shorts and Instagram Reels video.
-So, write a short script based on the topics I will provide from here on out.
-The script should be catchy such that the viewer does not lose interest.
-The introduction to the video should be provoking and catchy such that it immediately catches the viewer's attention.
-Create an intriguing and exciting title to grab the viewer's attention.
-The conclusion should always be asking the viewer to like, subscribe and hit the follow button.
-"""
-
-    generator = Generator("eNglish", system_instructions)
-    print(
-        generator.generate_script("Explain mitochondria")
-    )
+        return json.loads(s=response.choices[0].message.content)
