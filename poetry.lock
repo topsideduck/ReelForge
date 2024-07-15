@@ -2451,6 +2451,30 @@ files = [
 ]
 
 [[package]]
+name = "srt"
+version = "3.5.3"
+description = "A tiny library for parsing, modifying, and composing SRT files."
+optional = false
+python-versions = ">=2.7"
+files = [
+    {file = "srt-3.5.3.tar.gz", hash = "sha256:4884315043a4f0740fd1f878ed6caa376ac06d70e135f306a6dc44632eed0cc0"},
+]
+
+[[package]]
+name = "srt-equalizer"
+version = "0.1.9"
+description = "Transform subtitle line lengths, splitting into multiple subtitle fragments if necessary. "
+optional = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "srt_equalizer-0.1.9-py3-none-any.whl", hash = "sha256:fdacdcaecac11edc1c992e575b8bdd0cce6b23c087ff442071b977d0a5289180"},
+    {file = "srt_equalizer-0.1.9.tar.gz", hash = "sha256:bd789e1b375f8de8543588a08bec960e70f2556502b6d8350e1dc48d97d4f1ab"},
+]
+
+[package.dependencies]
+srt = ">=3.5.3,<4.0.0"
+
+[[package]]
 name = "starlette"
 version = "0.37.2"
 description = "The little ASGI library that shines."
@@ -2935,4 +2959,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "e347c02271dcc408ea2d02c4d74f66f30addabecc4609415d5fb5eacf60c326b"
+content-hash = "62031004aa668844370fa9fe32f0157c07cff4b984114d2246c0b219609830a6"

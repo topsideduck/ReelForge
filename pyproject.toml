@@ -11,6 +11,7 @@ python = "^3.12"
 g4f = {extras = ["all"], version = "^0.3.2.2"}
 requests = "^2.32.3"
 moviepy = "^1.0.3"
+srt-equalizer = "^0.1.9"
 
 
 [tool.poetry.group.dev.dependencies]
