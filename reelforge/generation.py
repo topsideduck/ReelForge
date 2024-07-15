@@ -34,3 +34,23 @@ Json doesn't allow line breaks, so replace all line breaks in the script with "\
         ]
 
         self._client: Client = Client()
+
+    # Language deletion not allowed as a language is always required.
+    @property
+    def language(self) -> str:
+        return self._language
+
+    @language.setter
+    def language(self, language: str) -> None:
+        # TODO: get supported languages for each model without hard coding it.
+        supported_languages: list[str] = ['Albanian', 'Amharic', 'Arabic', 'Armenian', 'Bengali', 'Bosnian', 'Bulgarian', 'Burmese', 'Catalan', 'Chinese', 'Croatian', 'Czech', 'Danish', 'Dutch', 'Estonian', 'Finnish', 'French', 'Georgian', 'German', 'Greek', 'Gujarati', 'Hindi', 'Hungarian', 'Icelandic', 'Indonesian', 'Italian', 'Japanese', 'Kannada', 'Kazakh', 'Korean', 'Latvian', 'Lithuanian', 'Macedonian', 'Malay', 'Malayalam', 'Marathi', 'Mongolian', 'Norwegian', 'Persian', 'Polish', 'Portuguese', 'Punjabi', 'Romanian', 'Russian', 'Serbian', 'Slovak', 'Slovenian', 'Somali', 'Spanish', 'Swahili', 'Swedish', 'Tagalog', 'Tamil', 'Telugu', 'Thai', 'Turkish', 'Ukrainian', 'Urdu', 'Vietnamese']
+
+        # Check if the language is supported.
+        if language.lower().capitalize() not in supported_languages:
+            raise ValueError(
+                f"{language} is not supported! Supported languages: "
+                f"{", ".join(supported_languages).strip(', ')}."
+            )
+
+        else:
+            self._language: str = language
