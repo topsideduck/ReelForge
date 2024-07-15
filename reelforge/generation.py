@@ -54,3 +54,13 @@ Json doesn't allow line breaks, so replace all line breaks in the script with "\
 
         else:
             self._language: str = language
+
+    # Setting conversation is not allowed as the conversation should not be
+    # externally modified.
+    @property
+    def conversation(self) -> list[dict[str, str]]:
+        return self._conversation
+
+    @conversation.deleter
+    def conversation(self) -> None:
+        del self._conversation[1:]
