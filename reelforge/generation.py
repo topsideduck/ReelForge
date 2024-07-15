@@ -33,7 +33,7 @@ Do not use formatting or emojis in your response.
 Return your response in json format, with the fields being "title" and "script". 
 The "title" field is a string, and the "script" field is a list of string, where each string is a sentence from the script.
 Json doesn't allow line breaks, so replace all line breaks in the script with "\n".
-             """,
+             """
             }
         ]
 
@@ -47,7 +47,7 @@ Json doesn't allow line breaks, so replace all line breaks in the script with "\
     @language.setter
     def language(self, language: str) -> None:
         # TODO: get supported languages for each model without hard coding it.
-        supported_languages: list[str] = ['Albanian', 'Amharic', 'Arabic', 'Armenian', 'Bengali', 'Bosnian', 'Bulgarian', 'Burmese', 'Catalan', 'Chinese', 'Croatian', 'Czech', 'Danish', 'Dutch', 'Estonian', 'Finnish', 'French', 'Georgian', 'German', 'Greek', 'Gujarati', 'Hindi', 'Hungarian', 'Icelandic', 'Indonesian', 'Italian', 'Japanese', 'Kannada', 'Kazakh', 'Korean', 'Latvian', 'Lithuanian', 'Macedonian', 'Malay', 'Malayalam', 'Marathi', 'Mongolian', 'Norwegian', 'Persian', 'Polish', 'Portuguese', 'Punjabi', 'Romanian', 'Russian', 'Serbian', 'Slovak', 'Slovenian', 'Somali', 'Spanish', 'Swahili', 'Swedish', 'Tagalog', 'Tamil', 'Telugu', 'Thai', 'Turkish', 'Ukrainian', 'Urdu', 'Vietnamese']
+        supported_languages: list[str] = ['Albanian', 'Amharic', 'Arabic', 'Armenian', 'Bengali', 'Bosnian', 'Bulgarian', 'Burmese', 'Catalan', 'Chinese', 'Croatian', 'Czech', 'Danish', 'Dutch', 'English', 'Estonian', 'Finnish', 'French', 'Georgian', 'German', 'Greek', 'Gujarati', 'Hindi', 'Hungarian', 'Icelandic', 'Indonesian', 'Italian', 'Japanese', 'Kannada', 'Kazakh', 'Korean', 'Latvian', 'Lithuanian', 'Macedonian', 'Malay', 'Malayalam', 'Marathi', 'Mongolian', 'Norwegian', 'Persian', 'Polish', 'Portuguese', 'Punjabi', 'Romanian', 'Russian', 'Serbian', 'Slovak', 'Slovenian', 'Somali', 'Spanish', 'Swahili', 'Swedish', 'Tagalog', 'Tamil', 'Telugu', 'Thai', 'Turkish', 'Ukrainian', 'Urdu', 'Vietnamese']
 
         # Check if the language is supported.
         if language.lower().capitalize() not in supported_languages:
@@ -108,3 +108,19 @@ Json doesn't allow line breaks, so replace all line breaks in the script with "\
         # Since the output given by GPT-4o is in json, we load it
         # into a dictionary and return it.
         return json.loads(response.choices[0].message.content)
+
+
+if __name__ == '__main__':
+    system_instructions = """
+You are a script writer for a Youtube Shorts and Instagram Reels video.
+So, write a short script based on the topics I will provide from here on out.
+The script should be catchy such that the viewer does not lose interest.
+The introduction to the video should be provoking and catchy such that it immediately catches the viewer's attention.
+Create an intriguing and exciting title to grab the viewer's attention.
+The conclusion should always be asking the viewer to like, subscribe and hit the follow button.
+"""
+
+    generator = Generator("eNglish", system_instructions)
+    print(
+        generator.generate_script("Explain mitochondria")
+    )
