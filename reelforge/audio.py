@@ -1,10 +1,12 @@
 import base64
 import json
+import os
+import uuid
 
 from datetime import timedelta
-from typing import LiteralString
 
 import requests
+import srt_equalizer
 
 from moviepy.editor import AudioFileClip
 
@@ -44,7 +46,7 @@ class Audio:
         return audio_bytes
 
     @staticmethod
-    def convert_to_srt_time_format(total_seconds: int) -> str:
+    def _convert_to_srt_time_format(total_seconds: int) -> str:
         """
         Helper function to convert total seconds to the
         SRT time format: HH:MM:SS,mmm
@@ -53,7 +55,47 @@ class Audio:
             return "0:00:00,0"
 
         return (
-            str(object=timedelta(seconds=total_seconds))
-            .rstrip(chars="0")
-            .replace(".", ",")
+            str(object=timedelta(seconds=total_seconds)).rstrip("0").replace(".", ",")
         )
+
+    def generate_subtitles(
+        self, sentences: list[str], audio_clips: list[AudioFileClip]
+    ) -> str:
+
+        start_time = 0
+        subtitles: list[str] = []
+
+        for i, (sentence, audio_clip) in enumerate(
+            iterable=zip(sentences, audio_clips), start=1
+        ):
+            duration: int = audio_clip.duration
+            end_time: int = start_time + duration
+
+            # Format: subtitle index, start time --> end time, sentence
+            subtitle_entry: str = (
+                f"{i}\n{self._convert_to_srt_time_format(start_time)} --> "
+                f"{self._convert_to_srt_time_format(end_time)}\n{sentence}\n"
+            )
+
+            subtitles.append(subtitle_entry)
+
+            # Update start time for the next subtitle.
+            start_time += duration
+
+        subtitles: str = "\n".join(subtitles)
+
+        # Write a temporary subtitles file and equalize it.
+        subtitles_path: str = f"{uuid.uuid4()}.srt"
+
+        with open(file=subtitles_path, mode="w") as file:
+            file.write(subtitles)
+
+        srt_equalizer.equalize_srt_file(
+            srt_path=subtitles_path, output_srt_path=subtitles_path, target_chars=10
+        )
+
+        # Read the equalized subtitles file and return its contents, while deleting the file.
+        equalized_subtitles: str = open(file=subtitles_path, mode="r").read()
+        os.remove(path=subtitles_path)
+
+        return equalized_subtitles
