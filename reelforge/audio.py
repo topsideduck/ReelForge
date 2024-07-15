@@ -1,7 +1,12 @@
 import base64
 import json
 
+from datetime import timedelta
+from typing import LiteralString
+
 import requests
+
+from moviepy.editor import AudioFileClip
 
 
 class Audio:
@@ -28,8 +33,7 @@ class Audio:
 
         # Send a request to the api to generate the audio file.
         request: requests.Response = requests.post(
-            url=self.tts_endpoint,
-            headers=headers, json=data
+            url=self.tts_endpoint, headers=headers, json=data
         )
 
         # Extract the audio data from the response and return it.
@@ -38,3 +42,18 @@ class Audio:
         )
 
         return audio_bytes
+
+    @staticmethod
+    def convert_to_srt_time_format(total_seconds: int) -> str:
+        """
+        Helper function to convert total seconds to the
+        SRT time format: HH:MM:SS,mmm
+        """
+        if total_seconds == 0:
+            return "0:00:00,0"
+
+        return (
+            str(object=timedelta(seconds=total_seconds))
+            .rstrip(chars="0")
+            .replace(".", ",")
+        )
