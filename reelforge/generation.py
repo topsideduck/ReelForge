@@ -1,4 +1,8 @@
+import json
+from typing import Iterator
+
 from g4f.client import Client
+from g4f.client.stubs import ChatCompletion, ChatCompletionChunk
 
 
 class Generator:
@@ -63,4 +67,44 @@ Json doesn't allow line breaks, so replace all line breaks in the script with "\
 
     @conversation.deleter
     def conversation(self) -> None:
+        # Delete everything but the system prompt, as it is always required.
         del self._conversation[1:]
+
+    def generate_script(self, topic: str) -> dict | None:
+        """
+        Generates a script based on the topic provided by the user.
+
+        Args:
+            topic (str): The topic to generate the script on.
+
+        Returns:
+            dict | None: a dictionary with the keys "title" and "script". The
+            "title" contains a title automatically generated from the script.
+            The "script" contains the script generated based on the prompt.
+        """
+        prompt: str = f"""
+        Topic: {topic}
+        Language: {self.language}
+        """
+
+        # Append the prompt to the conversation.
+        self.conversation.append({"role": "user", "content": prompt})
+
+        # Send the conversation to GPT-4o to process it and generate a script.
+        response: ChatCompletion | Iterator[ChatCompletionChunk] = \
+            self._client.chat.completions.create(
+            model="gpt-4o", messages=self.conversation
+        )
+
+        # Append the result to the conversation as further context
+        # for the next prompt.
+        self.conversation.append(
+            {
+                "role": response.choices[0].message.role,
+                "content": response.choices[0].message.content,
+            }
+        )
+
+        # Since the output given by GPT-4o is in json, we load it
+        # into a dictionary and return it.
+        return json.loads(response.choices[0].message.content)
